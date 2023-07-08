@@ -2,6 +2,10 @@ html * {
   font-family: 'Sen', Arial, sans-serif;
 }
 
+:root {
+  --primary: #F46F4C;
+}
+
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
@@ -23,7 +27,7 @@ a {
 }
 
 .primary {
-  color: #F46F4C;
+  color: var(--primary);
 }
 
 .main-image {

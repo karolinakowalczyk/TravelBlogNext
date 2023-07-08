@@ -1,10 +1,39 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
+import UserContext from "@/app/userContext";
 import Link from "next/link";
+import { signOut } from "firebase/auth";
+import { auth } from "@/app/firebase";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
-  const logout = () => {
-    console.log("log out");
+  const [user, setUser] = useContext(UserContext);
+  const [isAuth, setIsAuth] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    const onLoad = async () => {
+      if (localStorage.getItem("user")) {
+        setIsAuth(true);
+      } else {
+        setIsAuth(false);
+      }
+    };
+    onLoad();
+  }, [user]);
+
+  const logout = async () => {
+    await signOut(auth)
+      .then(() => {
+        setUser(null);
+        setIsAuth(false);
+        localStorage.removeItem("user");
+        router.push("/");
+      })
+      .catch((error) => {
+        setError(error);
+      });
   };
 
   return (
@@ -31,36 +60,34 @@ const Navbar = () => {
                 Home
               </Link>
             </li>
-            <li className="nav-item">
-              <Link href={"/"} className="nav-link">
-                About
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link href={"/"} className="nav-link">
-                Contact
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link href={"/my-posts"} className="nav-link">
-                My Posts
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link href={"/"} className="nav-link" onClick={logout}>
-                Logout
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link href={"/login"} className="nav-link">
-                Login
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link href={"/register"} className="nav-link">
-                Register
-              </Link>
-            </li>
+            {isAuth && (
+              <li className="nav-item">
+                <Link href={"/my-posts"} className="nav-link">
+                  My Posts
+                </Link>
+              </li>
+            )}
+            {isAuth && (
+              <li className="nav-item">
+                <Link href={"/"} className="nav-link" onClick={logout}>
+                  Logout
+                </Link>
+              </li>
+            )}
+            {!isAuth && (
+              <li className="nav-item">
+                <Link href={"/login"} className="nav-link">
+                  Login
+                </Link>
+              </li>
+            )}
+            {!isAuth && (
+              <li className="nav-item">
+                <Link href={"/register"} className="nav-link">
+                  Register
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>

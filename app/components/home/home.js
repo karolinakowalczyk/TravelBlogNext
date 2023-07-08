@@ -6,6 +6,10 @@ import VeneziaLandscape from "../../../public/images/pexels-jarod-barton.jpg";
 import GirlWithSuitcase from "../../../public/images/pexels-tranmautritam.jpg";
 
 export default function Home() {
+  const explore = () => {
+    console.log("explore if user - my posts, if not user - login");
+  };
+
   return (
     <div>
       <Image
@@ -30,7 +34,9 @@ export default function Home() {
             is about my travel experiences and tips. Do you want to join this
             trip?
           </p>
-          <button className="p-3 mt-5 main-btn">Expole the Blog</button>
+          <button className="p-3 mt-5 main-btn" onClick={explore}>
+            Expole the Blog
+          </button>
         </div>
       </div>
     </div>

@@ -1,12 +1,12 @@
 "use client";
-import React, { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
-import { useRouter } from "next/navigation";
-import UserContext from "../userContext";
 
-export default function Login() {
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/app/firebase";
+
+const Register = () => {
   const {
     register,
     handleSubmit,
@@ -14,20 +14,17 @@ export default function Login() {
     formState: { errors },
   } = useForm();
 
-  const router = useRouter();
-
-  const [user, setUser] = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errorCode, setErrorCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const router = useRouter();
 
-  const login = async () => {
-    await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setUser(userCredential.user);
-        localStorage.setItem("user", user.accessToken);
-        router.push("/");
+  const signUp = async () => {
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        router.push("/login");
       })
       .catch((error) => {
         setErrorCode(error.code);
@@ -37,10 +34,10 @@ export default function Login() {
 
   return (
     <div className="container">
-      <h1 className="pb-2 page-header">Login</h1>
-      <form onSubmit={handleSubmit(login)}>
+      <h1 className="pb-2 page-header">Register</h1>
+      <form onSubmit={handleSubmit(signUp)}>
         <div className="form-group py-2">
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Email: </label>
           <input
             id="email"
             className="form-control"
@@ -56,7 +53,7 @@ export default function Login() {
           />
         </div>
         <div className="form-group py-2">
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Password: </label>
           <input
             id="password"
             className="form-control"
@@ -71,10 +68,28 @@ export default function Login() {
             })}
           />
         </div>
-        <button type="submit" name="login" className="main-btn p-2">
-          Login
+        <div className="form-group py-2">
+          <label htmlFor="confirm">Repeat password: </label>
+          <input
+            id="confirm"
+            className="form-control"
+            type="password"
+            value={confirmPassword}
+            {...register("cofirmPassword", {
+              required: "This field is required.",
+              onChange: (e) => {
+                e.preventDefault();
+                setConfirmPassword(e.target.value);
+              },
+            })}
+          />
+        </div>
+        <button type="submit" name="register" className="main-btn p-2">
+          Register
         </button>
       </form>
     </div>
   );
-}
+};
+
+export default Register;
