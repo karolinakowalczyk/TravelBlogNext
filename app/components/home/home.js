@@ -1,13 +1,21 @@
 "use client";
-
+import React, { useContext } from "react";
+import { useRouter } from "next/navigation";
+import UserContext from "../../userContext";
 import Image from "next/image";
 import "../../globals.css";
 import VeneziaLandscape from "../../../public/images/pexels-jarod-barton.jpg";
 import GirlWithSuitcase from "../../../public/images/pexels-tranmautritam.jpg";
 
 export default function Home() {
+  const [user, setUser] = useContext(UserContext);
+  const router = useRouter();
   const explore = () => {
-    console.log("explore if user - my posts, if not user - login");
+    if (user) {
+      router.push("/my-posts");
+    } else {
+      router.push("/login");
+    }
   };
 
   return (
