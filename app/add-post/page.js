@@ -1,11 +1,13 @@
 "use client";
-
 import React, { useState } from "react";
-import { auth, db } from "@/app/firebase";
+import { auth, db, storage } from "@/app/firebase";
 import { useForm } from "react-hook-form";
 import { collection, addDoc } from "firebase/firestore";
-import { useRouter } from "next/navigation";
+import { ref, uploadBytes } from "firebase/storage";
 import Image from "next/image";
+import { v4 } from "uuid";
+
+import { useRouter } from "next/navigation";
 
 const AddPost = () => {
   const {
@@ -15,25 +17,27 @@ const AddPost = () => {
     formState: { errors },
   } = useForm();
 
+  const router = useRouter();
+
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
   const [file, setFile] = useState("");
+  const [fileName, setFileName] = useState("");
   const [fileUrl, setFileUrl] = useState("");
   const [hashtag, setHashtag] = useState("");
+  const [hashtags, setHashtags] = useState([]);
   const [errorCode, setErrorCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const router = useRouter();
-
-  const addPost = async () => {
+  const addPostDoc = async () => {
     await addDoc(collection(db, "posts"), {
       userId: auth.currentUser.uid,
       title: title,
       author: author,
       content: content,
-      hashtags: [],
-      image: "",
+      hashtags: hashtags,
+      image: fileName,
     })
       .then(() => {
         router.push("/my-posts");
@@ -43,6 +47,57 @@ const AddPost = () => {
         setErrorMessage(error.message);
       });
   };
+
+  const addPost = async () => {
+    if (fileName !== "") {
+      const imageRef = ref(storage, `images/${fileName}`);
+      await uploadBytes(imageRef, file).then(() => {
+        addPostDoc();
+      });
+    } else {
+      addPostDoc();
+    }
+  };
+
+  const uploadImage = (e) => {
+    e.preventDefault();
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFileUrl(reader.result);
+        setFileName(file.name + v4());
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setFileUrl("");
+      setFileName("");
+    }
+  };
+
+  const addHashtag = (e) => {
+    if (e.key === "Enter" && hashtag !== "" && !hashtags.includes(hashtag)) {
+      let currentHashtags = [...hashtags];
+      currentHashtags.push(hashtag);
+      setHashtags(currentHashtags);
+      setHashtag("");
+    }
+  };
+
+  const removeHashtag = (e) => {
+    let currentHashtags = [...hashtags];
+    currentHashtags.splice(currentHashtags.indexOf(e.currentTarget.id), 1);
+    setHashtags(currentHashtags);
+  };
+
+  const displayHashtags = hashtags.map((hashtag, index) => (
+    <div key={index} className="hashtag-el">
+      <p className="hashtag-p">#{hashtag}</p>
+      <div onClick={removeHashtag} id={hashtag} className="hashtag-btn">
+        X
+      </div>
+    </div>
+  ));
+
   return (
     <div className="container">
       <h1 className="pb-2 page-header">Add Post</h1>
@@ -99,7 +154,6 @@ const AddPost = () => {
           <input
             type="file"
             className="form-control"
-            value={file}
             {...register("file", {
               onChange: (e) => {
                 e.preventDefault();
@@ -108,9 +162,9 @@ const AddPost = () => {
             })}
           />
           <button
-            className="main-btn mt-2 prevent-submit p-2"
-            type="submit"
+            className="main-btn mt-2 p-2"
             name="upload"
+            onClick={uploadImage}
           >
             Upload
           </button>
@@ -118,14 +172,13 @@ const AddPost = () => {
 
         <div className="form-group py-2">
           {fileUrl && (
-            <div>
-              <Image
-                src={fileUrl}
-                className="uploaded-img"
-                alt="uploaded-img"
-                fill={true}
-              />
-            </div>
+            <Image
+              src={fileUrl}
+              className="uploaded-img"
+              alt="uploaded-img"
+              width="0"
+              height="0"
+            />
           )}
         </div>
         <div className="form-group py-2">
@@ -134,6 +187,7 @@ const AddPost = () => {
             className="form-control"
             id="hashtag"
             value={hashtag}
+            onKeyDown={addHashtag}
             type="text"
             {...register("hashtag", {
               onChange: (e) => {
@@ -143,11 +197,8 @@ const AddPost = () => {
             })}
           />
         </div>
-        <button
-          type="submit"
-          name="add"
-          className="main-btn prevent-submit p-2"
-        >
+        <div className="d-flex flex-row flex-wrap">{displayHashtags}</div>
+        <button type="submit" name="add" className="main-btn p-2">
           Add
         </button>
       </form>

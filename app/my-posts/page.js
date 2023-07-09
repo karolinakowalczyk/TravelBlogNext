@@ -1,7 +1,6 @@
 "use client";
-
-import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import React, { useState, useEffect } from "react";
 import { auth, db, storage } from "@/app/firebase";
 import { collection, getDocs, where, query } from "firebase/firestore";
 import { ref, getDownloadURL } from "firebase/storage";
@@ -33,11 +32,14 @@ const MyPosts = () => {
           height={286}
         />
       )}
-
       <div className="card-body d-flex flex-column">
         <h5 className="card-title">{post.title}</h5>
         <p className="card-text">{post.author}</p>
-
+        {post.hashtags.map((hashtag, index) => (
+          <p key={index} className="card-text">
+            #{hashtag}
+          </p>
+        ))}
         <button className="main-btn p-1 mt-auto">
           <Link href={"/"} className="main-href">
             See post
@@ -114,7 +116,7 @@ const MyPosts = () => {
           Add new post
         </Link>
       </button>
-      <div className="d-flex flex-wrap">
+      <div className="d-flex flex-wrap justify-content-center">
         {loading ? (
           <div className="spinner-border" role="status"></div>
         ) : (
