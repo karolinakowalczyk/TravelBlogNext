@@ -3,9 +3,8 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import "../../globals.css";
-import VeneziaLandscape from "../../../public/images/pexels-jarod-barton.jpg";
-import GirlWithSuitcase from "../../../public/images/pexels-tranmautritam.jpg";
-
+import VeneziaLandscape from "@/public/images/pexels-jarod-barton.jpg";
+import GirlWithSuitcase from "@/public/images/pexels-tranmautritam.jpg";
 export default function Home() {
   const router = useRouter();
   const explore = () => {
@@ -33,7 +32,7 @@ export default function Home() {
         </div>
         <div className="half second d-flex flex-column justify-content-center">
           <h1 className="primary">
-            WELCOME TO <br /> 360 <span>&#176;</span> TRAVEL <br /> INSPIRATIONS
+            <br /> 360 <span>&#176;</span> TRAVEL <br /> INSPIRATIONS
           </h1>
           <p className="mt-5">
             You&apos;re travel lover? It&apos;s perfect place for you! This blog
