@@ -1,5 +1,7 @@
 import "./globals.css";
-import Home from "./components/home/home";
+import dynamic from "next/dynamic";
+
+const Home = dynamic(() => import("./components/home/home"));
 
 export const metadata = {
   title: "Travel Blog Next - 360 Travel Inspirations",
