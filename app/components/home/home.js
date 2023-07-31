@@ -3,24 +3,8 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import "../../globals.css";
-import VeneziaLandscape from "@/public/images/pexels-jarod-barton/pexels-jarod-barton.webp";
-import VeneziaLandscape300 from "@/public/images/pexels-jarod-barton/pexels-jarod-barton_300.webp";
-import VeneziaLandscape950 from "@/public/images/pexels-jarod-barton/pexels-jarod-barton_950.webp";
-import VeneziaLandscape1320 from "@/public/images/pexels-jarod-barton/pexels-jarod-barton_1320.webp";
-import VeneziaLandscape1600 from "@/public/images/pexels-jarod-barton/pexels-jarod-barton_1600.webp";
-import VeneziaLandscape1840 from "@/public/images/pexels-jarod-barton/pexels-jarod-barton_1840.webp";
-import VeneziaLandscape2048 from "@/public/images/pexels-jarod-barton/pexels-jarod-barton_2048.webp";
-import GirlWithSuitcase from "@/public/images/pexels-tranmautritam/pexels-tranmautritam.webp";
-import GirlWithSuitcase300 from "@/public/images/pexels-tranmautritam/pexels-tranmautritam_300.webp";
-import GirlWithSuitcase720 from "@/public/images/pexels-tranmautritam/pexels-tranmautritam_720.webp";
-import GirlWithSuitcase980 from "@/public/images/pexels-tranmautritam/pexels-tranmautritam_980.webp";
-import GirlWithSuitcase1180 from "@/public/images/pexels-tranmautritam/pexels-tranmautritam_1180.webp";
-import GirlWithSuitcase1350 from "@/public/images/pexels-tranmautritam/pexels-tranmautritam_1350.webp";
-import GirlWithSuitcase1500 from "@/public/images/pexels-tranmautritam/pexels-tranmautritam_1500.webp";
-import GirlWithSuitcase1650 from "@/public/images/pexels-tranmautritam/pexels-tranmautritam_1650.webp";
-import GirlWithSuitcase1800 from "@/public/images/pexels-tranmautritam/pexels-tranmautritam_1800.webp";
-import GirlWithSuitcase1930 from "@/public/images/pexels-tranmautritam/pexels-tranmautritam_1930.webp";
-import GirlWithSuitcase2048 from "@/public/images/pexels-tranmautritam/pexels-tranmautritam_2048.webp";
+import VeneziaLandscape from "@/public/images/pexels-jarod-barton.webp";
+import GirlWithSuitcase from "@/public/images/pexels-tranmautritam.webp";
 
 export default function Home() {
   const router = useRouter();
@@ -40,7 +24,8 @@ export default function Home() {
         alt="venezia-landscape"
         width={4088}
         height={3066}
-        srcSet={`${VeneziaLandscape300} 300w, ${VeneziaLandscape950} 950w, ${VeneziaLandscape1320} 1320w, ${VeneziaLandscape1600} 1600w, ${VeneziaLandscape1840} 1840w, ${VeneziaLandscape2048} 2048w`}
+        loading="eager"
+        layout="responsive"
       />
       <div className="d-flex content-div">
         <div className="half cropped">
@@ -50,8 +35,7 @@ export default function Home() {
             alt="girl with suitcase"
             width={2725}
             height={4088}
-            loading = 'eager'
-            srcSet={`${GirlWithSuitcase300} 300w, ${GirlWithSuitcase720} 720w, ${GirlWithSuitcase980} 980w, ${GirlWithSuitcase1180} 1180w, ${GirlWithSuitcase1350} 1350w, ${GirlWithSuitcase1500} 1500w ${GirlWithSuitcase1650} 1650w, ${GirlWithSuitcase1800} 1800w, ${GirlWithSuitcase1930} 1930w, ${GirlWithSuitcase2048} 2048w`}
+            layout="responsive"
           />
         </div>
         <div className="half second d-flex flex-column justify-content-center">
