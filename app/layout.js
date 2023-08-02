@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import UserContext from "./userContext";
+
 import { useState } from "react";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer/footer";
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
             <Navbar />
             <div id="site-body">{children}</div>
           </div>
+
           <Footer />
         </UserContext.Provider>
       </body>

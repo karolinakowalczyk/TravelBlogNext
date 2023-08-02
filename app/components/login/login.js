@@ -27,6 +27,28 @@ const LoginComponent = () => {
       .then((userCredential) => {
         setUser(userCredential.user);
         localStorage.setItem("user", user.accessToken);
+        app.post("/sessionLogin", (req, res) => {
+          const idToken = req.body.idToken.toString();
+          const expiresIn = 60 * 60 * 24 * 5 * 1000;
+
+          admin
+            .auth()
+            .createSessionCookie(idToken, { expiresIn })
+            .then(
+              (sessionCookie) => {
+                const options = {
+                  maxAge: expiresIn,
+                  httpOnly: true,
+                  secure: true,
+                };
+                res.cookie("session", sessionCookie, options);
+                res.end(JSON.stringify({ status: "success" }));
+              },
+              (error) => {
+                res.status(401).send("UNAUTHORIZED REQUEST!");
+              }
+            );
+        });
         router.push("/");
       })
       .catch((error) => {

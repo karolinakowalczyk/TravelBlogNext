@@ -6,6 +6,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import Image from "next/image";
 import { v4 } from "uuid";
+import "./add-post.css";
 
 import { useRouter } from "next/navigation";
 

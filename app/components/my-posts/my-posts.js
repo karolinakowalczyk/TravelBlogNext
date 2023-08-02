@@ -64,7 +64,6 @@ const MyPostsComponent = () => {
             where("userId", "==", auth.currentUser.uid)
           )
         ).then((userPosts) => {
-          const urlArr = [];
           userPosts.forEach(async (post, index) => {
             if (post.data().image) {
               setUrlLoading(true);
