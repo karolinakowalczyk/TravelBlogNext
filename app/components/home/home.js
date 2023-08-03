@@ -31,7 +31,7 @@ export default function Home() {
         <div className="half cropped">
           <Image
             src={GirlWithSuitcase}
-            className="sub-image main-image"
+            className="main-image"
             alt="girl with suitcase"
             width={2725}
             height={4088}

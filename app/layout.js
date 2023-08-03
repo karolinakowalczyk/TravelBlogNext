@@ -21,7 +21,6 @@ export default function RootLayout({ children }) {
             <Navbar />
             <div id="site-body">{children}</div>
           </div>
-
           <Footer />
         </UserContext.Provider>
       </body>
